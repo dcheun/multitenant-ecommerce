@@ -1,0 +1,2 @@
+Add "type": "module" to package.json to resolve issues with running payload generate:types.
+Ref: https://github.com/payloadcms/payload/issues/13290
