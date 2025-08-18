@@ -2,13 +2,14 @@
 
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import { Category } from '@/payload-types'
+import Link from 'next/link'
 import { useRef, useState } from 'react'
+import { CustomCategory } from '../types'
 import SubcategoryMenu from './subcategory-menu'
 import { useDropdownPosition } from './use-dropdown-position'
 
 interface CategoryDropdownProps {
-  category: Category
+  category: CustomCategory
   isActive?: boolean
   isNavigationHovered: boolean
 }
@@ -28,6 +29,12 @@ const CategoryDropdown = ({ category, isActive, isNavigationHovered }: CategoryD
     setIsOpen(false)
   }
 
+  // TODO: Potentiall improve mobile experience
+  // const toggleDropdown = () => {
+  //   if (!category.subcategories.length) return
+  //   setIsOpen(!isOpen)
+  // }
+
   const dropdownPosition = getDropdownPosition()
 
   return (
@@ -36,6 +43,7 @@ const CategoryDropdown = ({ category, isActive, isNavigationHovered }: CategoryD
       ref={dropdownRef}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      // onClick={toggleDropdown}
     >
       <div className='relative'>
         <Button
@@ -43,9 +51,12 @@ const CategoryDropdown = ({ category, isActive, isNavigationHovered }: CategoryD
           className={cn(
             'h-11 px-4 bg-transparent border-transparent rounded-full hover:bg-white hover:border-primary text-black',
             isActive && !isNavigationHovered && 'bg-white border-primary',
+            isOpen &&
+              'bg-white border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] -translate-x-[4px] -translate-y-[4px]',
           )}
+          asChild
         >
-          {category.name}
+          <Link href={`/${category.slug === 'all' ? '' : category.slug}`}>{category.name}</Link>
         </Button>
         {category.subcategories && category.subcategories.length > 0 && (
           <div
