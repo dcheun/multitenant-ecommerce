@@ -1,28 +1,38 @@
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet'
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from '@/components/ui/sheet'
+import { CategoriesGetManyOutput } from '@/modules/categories/types'
+import { useTRPC } from '@/trpc/client'
+import { useQuery } from '@tanstack/react-query'
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { CustomCategory } from '../types'
 
 interface CategoriesSidebarProps {
   open: boolean
   onOpenChange: (open: boolean) => void
-  data: CustomCategory[] // TODO: Remove this later
 }
 
-const CategoriesSidebar = ({ open, onOpenChange, data }: CategoriesSidebarProps) => {
-  const [parentCategories, setParentCategories] = useState<CustomCategory[] | null>(null)
-  const [selectedCategory, setSelectedCategory] = useState<CustomCategory | null>(null)
+const CategoriesSidebar = ({ open, onOpenChange }: CategoriesSidebarProps) => {
+  const trpc = useTRPC()
+  const { data } = useQuery(trpc.categories.getMany.queryOptions())
+
+  const [parentCategories, setParentCategories] = useState<CategoriesGetManyOutput | null>(null)
+  const [selectedCategory, setSelectedCategory] = useState<CategoriesGetManyOutput[1] | null>(null)
 
   const router = useRouter()
 
   // If we have parent categories, show those, otherwise show root categories
   const currentCategories = parentCategories ?? data ?? []
 
-  const handleCategoryClick = (category: CustomCategory) => {
+  const handleCategoryClick = (category: CategoriesGetManyOutput[1]) => {
     if (category.subcategories?.length > 0) {
-      setParentCategories(category.subcategories as CustomCategory[])
+      setParentCategories(category.subcategories as CategoriesGetManyOutput)
       setSelectedCategory(category)
     } else {
       // This is a leaf category (no subcategories)
@@ -63,6 +73,7 @@ const CategoriesSidebar = ({ open, onOpenChange, data }: CategoriesSidebarProps)
       <SheetContent side='left' className='p-0 transition-none' style={{ backgroundColor }}>
         <SheetHeader className='p-4 border-b'>
           <SheetTitle>Categories</SheetTitle>
+          <SheetDescription></SheetDescription>
         </SheetHeader>
 
         <ScrollArea className='flex flex-col overflow-y-auto h-full pb-2'>
