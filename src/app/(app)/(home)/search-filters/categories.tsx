@@ -2,14 +2,14 @@
 
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import { CategoriesGetManyOutput } from '@/modules/categories/types'
 import { ListFilterIcon } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
-import { CustomCategory } from '../types'
 import CategoriesSidebar from './categories-sidebar'
 import CategoryDropdown from './category-dropdown'
 
 interface Props {
-  data: CustomCategory[]
+  data: CategoriesGetManyOutput
 }
 
 const Categories = ({ data }: Props) => {
@@ -57,7 +57,7 @@ const Categories = ({ data }: Props) => {
   return (
     <div className='relative w-full'>
       {/* Categories sidebar */}
-      <CategoriesSidebar open={isSidebarOpen} onOpenChange={setIsSidebarOpen} data={data} />
+      <CategoriesSidebar open={isSidebarOpen} onOpenChange={setIsSidebarOpen} />
 
       {/* Hidden div to measure  all items */}
       <div
