@@ -30,3 +30,5 @@ export function prefetch<T extends ReturnType<TRPCQueryOptions<any>>>(queryOptio
     void queryClient.prefetchQuery(queryOptions)
   }
 }
+
+export const caller = appRouter.createCaller(createTRPCContext)
