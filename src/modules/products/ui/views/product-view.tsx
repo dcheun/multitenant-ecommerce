@@ -4,6 +4,7 @@
 
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { LinkIcon, StarIcon } from 'lucide-react'
+import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Fragment } from 'react/jsx-runtime'
@@ -13,6 +14,15 @@ import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { formatCurrency, generateTenantURL } from '@/lib/utils'
 import { useTRPC } from '@/trpc/client'
+
+const CartButton = dynamic(() => import('@/modules/products/ui/components/cart-button'), {
+  ssr: false,
+  loading: () => (
+    <Button disabled className='flex-1 bg-pink-400'>
+      Add to cart
+    </Button>
+  ),
+})
 
 interface ProductViewProps {
   productId: string
@@ -88,9 +98,7 @@ const ProductView = ({ productId, tenantSlug }: ProductViewProps) => {
             <div className='h-full border-t lg:border-t-0 lg:border-l'>
               <div className='flex flex-col gap-4 border-b p-6'>
                 <div className='flex flex-row items-center gap-2'>
-                  <Button variant='elevated' className='flex-1 bg-pink-400'>
-                    Add to cart
-                  </Button>
+                  <CartButton productId={productId} tenantSlug={tenantSlug} />
                   <Button
                     variant='elevated'
                     className='size-12'
