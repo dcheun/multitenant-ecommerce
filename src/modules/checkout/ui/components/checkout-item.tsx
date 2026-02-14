@@ -33,7 +33,7 @@ const CheckoutItem = ({
         </div>
       </div>
 
-      <div>
+      <div className='flex flex-col justify-between py-4'>
         <div>
           <Link href={productUrl}>
             <h4 className='font-bold underline'>{name}</h4>
