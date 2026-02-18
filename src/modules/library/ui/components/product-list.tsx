@@ -5,9 +5,9 @@ import { InboxIcon } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { DEFAULT_LIMIT } from '@/constants'
+import ProductCard from '@/modules/library/ui/components/product-card'
 import { ProductCardSkeleton } from '@/modules/products/ui/components/product-card'
 import { useTRPC } from '@/trpc/client'
-import ProductCard from '@/modules/library/ui/components/product-card'
 
 const ProductList = () => {
   const trpc = useTRPC()
@@ -48,8 +48,8 @@ const ProductList = () => {
               imageUrl={product.image?.url}
               tenantSlug={product.tenant?.slug}
               tenantImageUrl={product.tenant?.image?.url}
-              reviewRating={3}
-              reviewCount={5}
+              reviewRating={product.reviewRating}
+              reviewCount={product.reviewCount}
             />
           ))}
       </div>
