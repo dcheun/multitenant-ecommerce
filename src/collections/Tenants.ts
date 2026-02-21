@@ -1,7 +1,13 @@
 import type { CollectionConfig } from 'payload'
 
+import { isSuperAdmin } from '@/lib/access'
+
 export const Tenants: CollectionConfig = {
   slug: 'tenants',
+  access: {
+    create: ({ req }) => isSuperAdmin(req.user),
+    delete: ({ req }) => isSuperAdmin(req.user),
+  },
   admin: {
     useAsTitle: 'slug',
   },
@@ -10,7 +16,7 @@ export const Tenants: CollectionConfig = {
       name: 'name',
       type: 'text',
       required: true,
-      label: 'Store  Name',
+      label: 'Store Name',
       // admin refers to the person looking at the store.
       admin: {
         description: 'The name of the store',
@@ -22,6 +28,9 @@ export const Tenants: CollectionConfig = {
       index: true,
       required: true,
       unique: true,
+      access: {
+        update: ({ req }) => isSuperAdmin(req.user),
+      },
       admin: {
         description: 'The is the subdomain for the store (e.g. [slug].gumroad.com)',
       },
@@ -35,15 +44,17 @@ export const Tenants: CollectionConfig = {
       name: 'stripeAccountId',
       type: 'text',
       required: true,
+      access: {
+        update: ({ req }) => isSuperAdmin(req.user),
+      },
       admin: {
-        readOnly: true,
+        description: 'Stripe account ID associated with your shop.',
       },
     },
     {
       name: 'stripeDetailsSubmitted',
       type: 'checkbox',
       admin: {
-        readOnly: true,
         description: 'You cannot create products until you submit your Stripe details.',
       },
     },
