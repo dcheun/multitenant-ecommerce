@@ -7,6 +7,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Fragment } from 'react/jsx-runtime'
 import { toast } from 'sonner'
+import { RichText } from '@payloadcms/richtext-lexical/react'
 
 import StarRating from '@/components/star-rating'
 import { Button } from '@/components/ui/button'
@@ -90,7 +91,7 @@ const ProductView = ({ productId, tenantSlug }: ProductViewProps) => {
 
             <div className='p-6'>
               {data.description ? (
-                <p>{data.description}</p>
+                <RichText data={data.description} />
               ) : (
                 <p className='text-muted-foreground font-medium italic'>No description available</p>
               )}
@@ -152,6 +153,18 @@ const ProductView = ({ productId, tenantSlug }: ProductViewProps) => {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export const ProductViewSkeleton = () => {
+  return (
+    <div className='px-4 py-10 lg:px-12'>
+      <div className='overflow-hidden rounded-sm border bg-white'>
+        <div className='relative aspect-[3.9] border-b'>
+          <Image src={'/placeholder.png'} alt='Placeholder' fill className='object-cover' />
         </div>
       </div>
     </div>
