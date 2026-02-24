@@ -43,6 +43,13 @@ const SearchInput = ({ disabled, defaultValue, onChange }: Props) => {
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
         />
+        <Input
+          className='pl-8'
+          placeholder='Search products'
+          disabled={disabled}
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
+        />
       </div>
 
       <Button
