@@ -16,7 +16,7 @@ const CartButton = ({ tenantSlug, productId, isPurchased }: CartButtonProps) => 
   if (isPurchased) {
     return (
       <Button variant='elevated' asChild className='flex-1 bg-white font-medium'>
-        <Link prefetch href={`/library/${productId}`}>
+        <Link href={`${process.env.NEXT_PUBLIC_APP_URL}/library/${productId}`}>
           View in Library
         </Link>
       </Button>

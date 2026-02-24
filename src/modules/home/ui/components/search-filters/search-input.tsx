@@ -1,5 +1,3 @@
-'use client'
-
 import { useQuery } from '@tanstack/react-query'
 import { BookmarkCheckIcon, ListFilterIcon, SearchIcon } from 'lucide-react'
 import Link from 'next/link'
@@ -8,30 +6,30 @@ import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import CategoriesSidebar from '@/modules/home/ui/components/search-filters/categories-sidebar'
-import { useProductFilters } from '@/modules/products/hooks/use-product-filters'
 import { useTRPC } from '@/trpc/client'
 
 interface Props {
   disabled?: boolean
+  defaultValue?: string | undefined
+  onChange?: (value: string) => void
 }
 
-const SearchInput = ({ disabled }: Props) => {
+const SearchInput = ({ disabled, defaultValue, onChange }: Props) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
-  const [searchValue, setSearchValue] = useState('')
-  const [filters, setFilters] = useProductFilters()
+  const [searchValue, setSearchValue] = useState(defaultValue || '')
 
   const trpc = useTRPC()
   const session = useQuery(trpc.auth.session.queryOptions())
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      setFilters({ search: searchValue })
+      onChange?.(searchValue)
     }, 500)
 
     return () => {
       clearTimeout(timeoutId)
     }
-  }, [searchValue, setFilters])
+  }, [searchValue, onChange])
 
   return (
     <div className='flex w-full items-center gap-2'>
